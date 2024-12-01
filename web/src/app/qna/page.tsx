@@ -1,0 +1,98 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { fetchLatestQuestions } from "@/services/qnaService";
+import { ArrowDown, ArrowUp } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+type QuestionType = {
+  title: string;
+  body: string;
+  votes: number;
+  user: {
+    name: string;
+    email: string;
+  };
+};
+
+export default function QnAPage() {
+  return (
+    <div className="">
+      <Header />
+      <Questions />
+    </div>
+  );
+}
+
+export function Questions() {
+  const [questions, setQuestions] = useState<QuestionType[]>([]);
+
+  const _loadData = async () => {
+    try {
+      const res = await fetchLatestQuestions();
+      if (res.status < 400) {
+        const data = await res.json();
+        setQuestions(data);
+      } else {
+        toast("Failed to load questions");
+      }
+    } catch (e: unknown) {
+      if (e instanceof Error) return;
+      console.error(e);
+      toast(`Error while loading questions`);
+    }
+  };
+
+  useEffect(() => {
+    _loadData();
+  }, []);
+  return (
+    <div className="flex flex-col max-w-[500px] gap-3 mx-auto p-3">
+      {questions.map((question, i) => (
+        <Question question={question} key={i} />
+      ))}
+    </div>
+  );
+}
+
+function Question({ question }: { question: QuestionType }) {
+  return (
+    <div className="border rounded shadow-md bg-primary-foreground p-5 flex flex-col gap-3 ">
+      {/* Question Header */}
+      <div className="flex gap-3 items-center">
+        <div className="shadow-md h-[40px] w-[40px] rounded-full bg-secondary"></div>
+        <div>{question.user.name}</div>
+      </div>
+
+      {/* Body => Title + text */}
+      <div className="font-semibold">{question.title}</div>
+      <div>{question.body}</div>
+
+      {/* Vote and Details */}
+      <div className="flex justify-between">
+        <div className="flex gap-3 items-center">
+          <Button variant={"ghost"} className="w-[30px] rounded-full border">
+            <ArrowUp size={20} />
+          </Button>
+          <div>{question.votes}</div>
+          <Button variant={"ghost"} className="w-[30px] rounded-full border">
+            <ArrowDown size={20} />
+          </Button>
+        </div>
+
+        <Button variant={"outline"}> Answers</Button>
+      </div>
+    </div>
+  );
+}
+
+const Header = () => {
+  return (
+    <header className="flex h-[60px] items-center px-5 relative">
+      <h1 className="text-xl text-center md:mx-auto">QnA Section</h1>
+      <Link href="/qna/ask"><Button className="ml-auto absolute right-3 top-3">Ask Question</Button></Link>
+    </header>
+  );
+};
