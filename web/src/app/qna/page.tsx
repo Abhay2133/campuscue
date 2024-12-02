@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { fetchLatestQuestions } from "@/services/qnaService";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 type QuestionType = {
@@ -26,22 +26,53 @@ export default function QnAPage() {
   );
 }
 
-export function Questions() {
+const Retry = ({ onClick }: { onClick: () => void }) => (
+  <div className="flex items-center flex-col gap-3">
+    <div>Failed to load questions !</div>
+    <Button onClick={onClick}>Retry</Button>
+  </div>
+);
+
+const Loader = () => (
+  <div className="flex flex-col gap-3 py-10 items-center">
+    <Loader2 className=" animate-spin" size={30} />
+    <div>Loading</div>
+  </div>
+);
+
+function Questions() {
   const [questions, setQuestions] = useState<QuestionType[]>([]);
+  const [loader, setLoader] = useState<ReactNode | null>(Loader);
 
   const _loadData = async () => {
+    setLoader(Loader);
     try {
       const res = await fetchLatestQuestions();
       if (res.status < 400) {
         const data = await res.json();
         setQuestions(data);
+        setLoader(null);
       } else {
         toast("Failed to load questions");
+        setLoader(
+          <Retry
+            onClick={() => {
+              _loadData();
+            }}
+          />
+        );
       }
-    } catch (e: unknown) {
-      if (e instanceof Error) return;
+    } catch (e) {
+      if (!(e instanceof Error)) return;
       console.error(e);
       toast(`Error while loading questions`);
+      setLoader(
+        <Retry
+          onClick={() => {
+            _loadData();
+          }}
+        />
+      );
     }
   };
 
@@ -50,9 +81,15 @@ export function Questions() {
   }, []);
   return (
     <div className="flex flex-col max-w-[500px] gap-3 mx-auto p-3">
-      {questions.map((question, i) => (
-        <Question question={question} key={i} />
-      ))}
+      {loader ? (
+        loader
+      ) : (
+        <>
+          {questions.map((question, i) => (
+            <Question question={question} key={i} />
+          ))}
+        </>
+      )}
     </div>
   );
 }
@@ -92,7 +129,9 @@ const Header = () => {
   return (
     <header className="flex h-[60px] items-center px-5 relative">
       <h1 className="text-xl text-center md:mx-auto">QnA Section</h1>
-      <Link href="/qna/ask"><Button className="ml-auto absolute right-3 top-3">Ask Question</Button></Link>
+      <Link href="/qna/ask">
+        <Button className="ml-auto absolute right-3 top-3">Ask Question</Button>
+      </Link>
     </header>
   );
 };

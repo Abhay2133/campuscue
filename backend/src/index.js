@@ -11,13 +11,13 @@ const postRoutes=require('./routes/posts')
 const fs = require('fs');
 const path = require('path');
 const morgan = require("morgan")
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 const cors = require('cors')
 dotenv.config()
 
 const app = express();
 process.env.NODE_ENV == "dev" && app.use(morgan('dev'));
-app.use(morgan('combined', { stream: accessLogStream }));
+// app.use(morgan('combined', { stream: accessLogStream }));
 
 app.use(cors())
 // Connect to MongoDB
