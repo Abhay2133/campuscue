@@ -34,7 +34,7 @@ app.use('/api/questions',questionRoutes)
 app.use('/api/answers',answerRoutes)
 app.use('/api/posts',postRoutes)
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, ()=>console.log(`Server started at http://localhost:${PORT}`));
 
 module.exports = app;

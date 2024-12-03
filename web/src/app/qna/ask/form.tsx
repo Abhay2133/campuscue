@@ -51,7 +51,7 @@ export function QuestionForm({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input className="bg-secondary" placeholder="" {...field} />
               </FormControl>
               <FormDescription>
                 Briefly describe your question
@@ -69,7 +69,7 @@ export function QuestionForm({
             <FormItem>
               <FormLabel>Body</FormLabel>
               <FormControl>
-                <Textarea placeholder="Description of the question" {...field} />
+                <Textarea placeholder="Description of the question" className="bg-secondary" {...field} />
               </FormControl>
               <FormDescription>
                 Properly describe your question here.

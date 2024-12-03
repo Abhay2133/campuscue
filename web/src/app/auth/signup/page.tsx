@@ -1,12 +1,17 @@
 "use client";
 import { doSignup } from "@/services/userService";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SyntheticEvent, useState } from "react";
 import { toast } from "sonner";
 
 export default function Signup() {
   const router = useRouter();
-  const [form, setForm] = useState({ name: "Abhay", email: "abhay123@gmail.com", password: "abhay123" });
+  const [form, setForm] = useState({
+    name: "Abhay",
+    email: "abhay123@gmail.com",
+    password: "abhay123",
+  });
   const _doSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     try {
@@ -20,7 +25,7 @@ export default function Signup() {
       } else {
         toast("Failed to Signup");
       }
-    } catch (e:unknown) {
+    } catch (e: unknown) {
       console.error(e);
       toast("Signup Error");
     }
@@ -32,8 +37,8 @@ export default function Signup() {
         {/* <a href="#" className="text-2xl py-5 font-bold">
           CampusCue
         </a> */}
-        <Header/>
-        <div className="my-10 w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <Header />
+        <div className="my-5 w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create New Account
@@ -118,7 +123,7 @@ export default function Signup() {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400 ">
                 Already have an account ?{" "}
                 <a
-                  href="/login"
+                  href="/auth/login"
                   className="font-medium text-blue-600 hover:underline dark:text-primary-500"
                 >
                   Log In
@@ -135,7 +140,9 @@ export default function Signup() {
 const Header = () => {
   return (
     <header className="flex justify-center p-5">
-      <h1 className="text-2xl">CAMPUS-CUE</h1>
+      <Link href="/">
+        <h1 className="text-2xl font-semibold">CampusCue</h1>
+      </Link>
     </header>
   );
 };

@@ -2,20 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { fetchLatestQuestions } from "@/services/qnaService";
+import { QuestionType } from "@/types/qna";
 import { ArrowDown, ArrowUp, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-type QuestionType = {
-  title: string;
-  body: string;
-  votes: number;
-  user: {
-    name: string;
-    email: string;
-  };
-};
 
 export default function QnAPage() {
   return (
@@ -79,6 +71,7 @@ function Questions() {
   useEffect(() => {
     _loadData();
   }, []);
+
   return (
     <div className="flex flex-col max-w-[500px] gap-3 mx-auto p-3">
       {loader ? (
@@ -119,7 +112,9 @@ function Question({ question }: { question: QuestionType }) {
           </Button>
         </div>
 
-        <Button variant={"outline"}> Answers</Button>
+        <Link href={`/qna/${question._id}`}>
+          <Button variant={"outline"}> Answers</Button>
+        </Link>
       </div>
     </div>
   );
