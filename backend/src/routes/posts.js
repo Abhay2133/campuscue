@@ -7,7 +7,7 @@ const upload = require('../config/multer');
 // Create a new post
 router.post('/', protect, upload.array('images', 5), async (req, res) => {
   try {
-    console.log("lund")
+    // console.log("lund")
     const { title, body, links } = req.body;
 
     if (!title || !body) {
@@ -15,7 +15,7 @@ router.post('/', protect, upload.array('images', 5), async (req, res) => {
     }
 
     // Process uploaded images
-    const imageUrls = req.files.map((file) => `/uploads/${file.filename}`);
+    const imageUrls = req?.files?.map((file) => `/uploads/${file.filename}`) || [];
 
     // Process links
     const linkArray = links ? links.split(',').map((link) => link.trim()) : [];

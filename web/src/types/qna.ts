@@ -25,3 +25,19 @@ export type QuestionType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export interface PostType {
+  _id: string;
+  title: string;
+  body: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  likes: number;
+  images: string[];
+  links: string[];
+  createdAt: string;
+  updatedAt: string;
+}
