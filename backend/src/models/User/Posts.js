@@ -17,9 +17,15 @@ const postSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    likes: {
+    upvotes: {
       type: Number,
       default: 0,
+      min:0
+    },
+    downvotes: {
+      type: Number,
+      default: 0,
+      min:0
     },
     images: [
       {
