@@ -15,9 +15,15 @@ const answerSchema=new mongoose.Schema(
             ref:'User',
             required:true,
         },
-        vote:{
+        upvotes:{
             type:Number,
-            default:0
+            default:0,
+            min:0
+        },
+        downvotes:{
+            type:Number,
+            default:0,
+            min:0
         },
     },
     {timestamps:true}

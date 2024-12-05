@@ -7,7 +7,6 @@ const upload = require('../config/multer');
 // Create a new post
 router.post('/', protect, upload.array('images', 5), async (req, res) => {
   try {
-    console.log("lund")
     const { title, body, links } = req.body;
 
     if (!title || !body) {
@@ -107,21 +106,5 @@ router.delete('/:id', protect, async (req, res) => {
   }
 });
 
-// Like a post
-router.post('/:id/like', protect, async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-
-    if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
-
-    post.likes += 1;
-    await post.save();
-    res.status(200).json({ message: 'Post liked successfully', likes: post.likes });
-  } catch (error) {
-    res.status(500).json({ message: 'Error liking post', error });
-  }
-});
 
 module.exports = router;
