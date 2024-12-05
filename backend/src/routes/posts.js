@@ -14,7 +14,7 @@ router.post('/', protect, upload.array('images', 5), async (req, res) => {
     }
 
     // Process uploaded images
-    const imageUrls = req.files.map((file) => `/uploads/${file.filename}`);
+    const imageUrls = req?.files?.map((file) => `/uploads/${file.filename}`) || [];
 
     // Process links
     const linkArray = links ? links.split(',').map((link) => link.trim()) : [];
