@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+// import { ModeToggle } from "@/components/theme-toggle";
+import { AppProvider } from "@/context/AppContext";
 import { ModeToggle } from "@/components/theme-toggle";
 
 const montserrat = localFont({
@@ -24,18 +26,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <div className="fixed bottom-3 left-3">
-            <ModeToggle/>
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <AppProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <div className="fixed bottom-3 right-3">
+              <ModeToggle/>
+            </div>
+            <Toaster />
+          </ThemeProvider>
+        </AppProvider>
       </body>
     </html>
   );

@@ -1,6 +1,8 @@
 "use client";
 
+import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/components/ui/sidebar";
 import { fetchLatestQuestions } from "@/services/qnaService";
 import { QuestionType } from "@/types/qna";
 import { ArrowDown, ArrowUp, Loader2 } from "lucide-react";
@@ -8,11 +10,12 @@ import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-
 export default function QnAPage() {
+  const { setActiveIndex } = useSidebar();
+  useEffect(() => setActiveIndex(2), []);
   return (
     <div className="">
-      <Header />
+      <QnAHeader />
       <Questions />
     </div>
   );
@@ -120,13 +123,13 @@ function Question({ question }: { question: QuestionType }) {
   );
 }
 
-const Header = () => {
+const QnAHeader = () => {
   return (
-    <header className="flex h-[60px] items-center px-5 relative">
-      <h1 className="text-xl text-center md:mx-auto">QnA Section</h1>
-      <Link href="/qna/ask">
-        <Button className="ml-auto absolute right-3 top-3">Ask Question</Button>
+    <Header className="px-3 relative h-[50px]">
+      <h1 className="text-xl">QnA Section</h1>
+      <Link href="/qna/ask" className="ml-auto">
+        <Button className="">Ask Question</Button>
       </Link>
-    </header>
+    </Header>
   );
 };

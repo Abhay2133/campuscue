@@ -1,8 +1,16 @@
+"use client";
+import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button"; // Optional shadcn button component
+import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+  const { setAppState } = useAppContext();
+  useEffect(() => {
+    setAppState((old) => ({ ...old, hasSidebar: false }));
+  }, []);
   return (
     <main className="bg-gray-50 text-gray-800">
       {/* Header */}
@@ -178,6 +186,15 @@ export default function LandingPage() {
           </a>
         </div>
       </footer>
+
+      {/* loader while check if user is logged in  */}
+      {/* <div className="min-h-screen w-full fixed bg-primary centered flex-col z-auto top-0 left-0">
+      <Loader message={"CampusCue"}/>
+      asldkfjl;dsfj
+    </div> */}
+      <div className="fixed bottom-3 left-3">
+        <ModeToggle />
+      </div>
     </main>
   );
 }
