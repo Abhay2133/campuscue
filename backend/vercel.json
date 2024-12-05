@@ -6,6 +6,6 @@
       "destination": "/api"
     }
   ],
-  "public":false,
-  "outputDirectory":"api"
+  "public": false,
+  "outputDirectory": "out"
 }
