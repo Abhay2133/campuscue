@@ -8,9 +8,9 @@ import { toast } from "sonner";
 export default function Signup() {
   const router = useRouter();
   const [form, setForm] = useState({
-    name: "Abhay",
-    email: "abhay123@gmail.com",
-    password: "abhay123",
+    name: "",
+    email: "",
+    password: "",
   });
   const _doSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();

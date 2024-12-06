@@ -8,8 +8,8 @@ import { toast } from "sonner";
 export default function Login() {
   const router = useRouter();
   const [form, setForm] = useState({
-    email: "abhay31@gmail.com",
-    password: "abhay123",
+    email: "",
+    password: "",
   });
   const _doLogin = async (e: SyntheticEvent) => {
     e.preventDefault();

@@ -6,7 +6,7 @@
         "request": "launch",
         "name": "Launch Server",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/server.js",
+        "program": "${workspaceFolder}/src/index.js",
         "env": {
           "NODE_ENV": "development"
         },

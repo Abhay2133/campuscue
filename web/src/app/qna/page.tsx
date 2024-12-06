@@ -4,14 +4,17 @@ import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { fetchLatestQuestions } from "@/services/qnaService";
+import { doLogout } from "@/services/userService";
 import { QuestionType } from "@/types/qna";
 import { ArrowDown, ArrowUp, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function QnAPage() {
   const { setActiveIndex } = useSidebar();
+
   useEffect(() => setActiveIndex(2), []);
   return (
     <div className="">
@@ -36,6 +39,7 @@ const Loader = () => (
 );
 
 function Questions() {
+  const router = useRouter();
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [loader, setLoader] = useState<ReactNode | null>(Loader);
 
@@ -48,6 +52,10 @@ function Questions() {
         setQuestions(data);
         setLoader(null);
       } else {
+        if (res.status == 401) {
+          doLogout();
+          router.replace("/auth/login");
+        }
         toast("Failed to load questions");
         setLoader(
           <Retry

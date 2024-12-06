@@ -27,6 +27,9 @@ const protect = async (req, res, next) => {
     //verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     req.user = await User.findById(decoded.id).select('-password');
+    if (!req.user) return res.status(401).json({
+      message: 'Invalid userId in token'
+    })
     next()
   }
   catch (error) {

@@ -16,3 +16,4 @@ export const doSignup = (name:string, email: string, password: string) =>
     },
   });
 
+export const doLogout = () => localStorage.removeItem("jwtToken");

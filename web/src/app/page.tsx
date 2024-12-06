@@ -1,15 +1,18 @@
 "use client";
-import { ModeToggle } from "@/components/theme-toggle";
+import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button"; // Optional shadcn button component
-import { useAppContext } from "@/context/AppContext";
+// import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LandingPage() {
-  const { setAppState } = useAppContext();
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
   useEffect(() => {
-    setAppState((old) => ({ ...old, hasSidebar: false }));
+    if (localStorage.getItem("jwtToken")) return router.replace("/feeds");
+    setLoading(false);
   }, []);
   return (
     <main className="bg-gray-50 text-gray-800">
@@ -32,7 +35,7 @@ export default function LandingPage() {
         </nav>
         <div className="space-x-4">
           <Link href="/auth/login">
-            <Button variant="outline" className="hidden sm:inline-block">
+            <Button variant="outline" className="hidden sm:inline-block text-primary">
               Login
             </Button>
           </Link>
@@ -57,7 +60,7 @@ export default function LandingPage() {
               <Button className="bg-blue-600 text-white">Get Started</Button>
             </Link>
             <Link href="#">
-              <Button variant="outline">Explore Features</Button>
+              <Button className="text-primary" variant="outline">Explore Features</Button>
             </Link>
           </div>
         </div>
@@ -165,7 +168,7 @@ export default function LandingPage() {
         </p>
         <div className="space-x-4">
           <Button className="bg-white text-blue-600">Sign Up Now</Button>
-          <Button variant="outline" className="text-white border-white">
+          <Button variant="outline" className="text-primary">
             Request a Demo
           </Button>
         </div>
@@ -188,13 +191,11 @@ export default function LandingPage() {
       </footer>
 
       {/* loader while check if user is logged in  */}
-      {/* <div className="min-h-screen w-full fixed bg-primary centered flex-col z-auto top-0 left-0">
-      <Loader message={"CampusCue"}/>
-      asldkfjl;dsfj
-    </div> */}
-      <div className="fixed bottom-3 left-3">
-        <ModeToggle />
-      </div>
+      {loading && (
+        <div className="min-h-screen w-full fixed bg-primary-foreground centered flex-col z-auto top-0 left-0">
+          <Loader message={"CampusCue"} />
+        </div>
+      )}
     </main>
   );
 }
