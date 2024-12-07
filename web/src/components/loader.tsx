@@ -9,7 +9,7 @@ export default function Loader({
 }: {
   className?: string;
   children?: ReactNode;
-  message: string;
+  message?: string;
 }) {
   return (
     <div

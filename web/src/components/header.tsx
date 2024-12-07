@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { SidebarTrigger } from "./ui/sidebar";
 import { cn } from "@/lib/utils";
 
-export default function Header({
+export default function SidebarHeader({
   children,
   className,
 }: {

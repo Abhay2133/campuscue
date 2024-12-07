@@ -8,6 +8,7 @@ import { submitAnswerById } from "@/services/qnaService";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Question } from "@/components/question";
+import SidebarHeader from "@/components/header";
 
 export default function AnswerPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -24,14 +25,14 @@ export default function AnswerPage({ params }: { params: { id: string } }) {
 
 const Header = (id: string) => {
   return (
-    <header className="flex h-[60px] items-center px-5 relative">
+    <SidebarHeader className="flex h-[50px] items-center px-3 relative">
       <h1 className="text-xl text-center md:mx-auto">
-        <Link href="/qna">CampusCue</Link>
+        <Link href="/qna">Submit an Answer</Link>
       </h1>
       <Link href={`/qna/${id}`}>
         <Button className="ml-auto absolute right-3 top-3">Show Answers</Button>
       </Link>
-    </header>
+    </SidebarHeader>
   );
 };
 

@@ -1,6 +1,7 @@
 "use client";
 
-import Header from "@/components/header";
+import ErrorFC from "@/components/error-loading";
+import SidebarHeader from "@/components/header";
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -10,7 +11,7 @@ import { PostType } from "@/types/qna";
 import { ArrowBigUp, Search } from "lucide-react";
 import { useEffect } from "react";
 // import Link from "next/link";
-import useSWR from "swr";
+import useSWR, { MutatorOptions } from "swr";
 
 export default function PostsPage() {
   const { setActiveIndex } = useSidebar();
@@ -20,12 +21,12 @@ export default function PostsPage() {
 
   return (
     <div>
-      <Header className="items-center py-3">
+      <SidebarHeader className="items-center py-3">
         <div>Posts</div>
         <div className="ml-auto">
           <Search />
         </div>
-      </Header>
+      </SidebarHeader>
       <main className="mx-auto max-w-[600px] min-h-screen">
         <Posts />
       </main>
@@ -38,17 +39,11 @@ const Posts = () => {
 
   if (error)
     return (
-      <div className="text-center">
-        <p className="text-red-600">Failed to load Posts</p>
-        <Button
-          variant="outline"
-          onClick={() => mutate()} // Retry fetching
-          disabled={isValidating} // Disable if retry is in progress
-          className="mt-4"
-        >
-          {isValidating ? "Retrying..." : "Retry"}
-        </Button>
-      </div>
+      <ErrorFC
+        mutate={mutate}
+        isValidating={isValidating}
+        message={"Failed to load Posts"}
+      />
     );
   if (!data) return <Loader message="Loading Posts" />;
   return (

@@ -1,58 +1,77 @@
 import { ReactNode, useEffect, useState } from "react";
 import { fetchQuestionById } from "@/services/qnaService";
-import { ArrowDown, ArrowUp, } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import Loader from "./loader";
 import { QuestionType } from "@/types/qna";
 import { Button } from "./ui/button";
+import useSWR, { MutatorOptions } from "swr";
+import { getQuestionById } from "@/constants/api";
+import { fetcher } from "@/lib/utils";
+import ErrorFC from "./error-loading";
+import { Skeleton } from "./ui/skeleton";
+import { QuestionPlaceholder } from "./placeholders";
 
 export const Question = ({ id }: { id: string }) => {
-  const [question, setQuestion] = useState<QuestionType>({
-    _id: "674f358cb2eca78252f67972",
-    title: "How to pass an exam without studing ?",
-    body: "I don't have much time to study such a vast syllabus, so I need a tips on complete the whole syllabus in one night.",
-    user: {
-      _id: "674f34cfb2eca78252f6796b",
-      name: "Abhay",
-      email: "abhay123@gmail.com",
-    },
-    votes: 0,
-    createdAt: "2024-12-03T16:45:00.322Z",
-    updatedAt: "2024-12-03T16:45:00.322Z",
-  });
-  const [loader, setLoader] = useState<ReactNode | null>(
-    <Loader message="Loading Question" />
+  // const [question, setQuestion] = useState<QuestionType>({
+  //   _id: "674f358cb2eca78252f67972",
+  //   title: "How to pass an exam without studing ?",
+  //   body: "I don't have much time to study such a vast syllabus, so I need a tips on complete the whole syllabus in one night.",
+  //   user: {
+  //     _id: "674f34cfb2eca78252f6796b",
+  //     name: "Abhay",
+  //     email: "abhay123@gmail.com",
+  //   },
+  //   votes: 0,
+  //   createdAt: "2024-12-03T16:45:00.322Z",
+  //   updatedAt: "2024-12-03T16:45:00.322Z",
+  // });
+
+  // const [loader, setLoader] = useState<ReactNode | null>(
+  //   <Loader message="Loading Question" />
+  // );
+
+  // const _loadData = async () => {
+  //   try {
+  //     setLoader(<Loader message="Loading Question" />);
+  //     const res = await fetchQuestionById(id);
+  //     if (res.status < 400) {
+  //       const data = await res.json();
+  //       setQuestion({ ...data });
+  //       setLoader(null);
+  //     } else {
+  //     }
+  //   } catch (error: unknown) {
+  //     if (!(error instanceof Error)) return;
+  //     console.error(error);
+  //     setLoader(
+  //       <center>
+  //         Failed to Load question
+  //         <br />
+  //         <Button variant={"outline"} onClick={_loadData}>
+  //           Retry
+  //         </Button>
+  //       </center>
+  //     );
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   _loadData();
+  // }, []);
+  const { data, error, isValidating, mutate } = useSWR(
+    getQuestionById(id),
+    fetcher
   );
-
-  const _loadData = async () => {
-    try {
-      setLoader(<Loader message="Loading Question" />);
-      const res = await fetchQuestionById(id);
-      if (res.status < 400) {
-        const data = await res.json();
-        setQuestion({ ...data });
-        setLoader(null);
-      } else {
-      }
-    } catch (error: unknown) {
-      if (!(error instanceof Error)) return;
-      console.error(error);
-      setLoader(
-        <center>
-          Failed to Load question
-          <br />
-          <Button variant={"outline"} onClick={_loadData}>
-            Retry
-          </Button>
-        </center>
-      );
-    }
-  };
-
-  useEffect(() => {
-    _loadData();
-  }, []);
-
-  return <>{loader ? loader : <QuestionView question={question} />}</>;
+  if (error)
+    return (
+      <ErrorFC
+        mutate={mutate}
+        isValidating={isValidating}
+        message={"Failed to load Question"}
+      />
+    );
+  if (!data) return <QuestionPlaceholder />;
+  return <QuestionView question={data as QuestionType} />;
 };
 
 const QuestionView = ({ question }: { question: Partial<QuestionType> }) => {
