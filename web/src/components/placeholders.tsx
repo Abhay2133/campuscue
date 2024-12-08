@@ -7,3 +7,12 @@ export const QuestionPlaceholder = () => (
     <Skeleton className="h-[60px] w-full rounded" />
   </div>
 );
+
+export const AnswerPlaceholder = () => {
+  return (
+    <div className="p-5 rounded border bg-primary-foreground space-y-2">
+      <Skeleton className="h-[60px]" />
+      <Skeleton className="w-[200px] h-[20px] ml-auto" />
+    </div>
+  );
+};

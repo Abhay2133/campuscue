@@ -26,11 +26,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import useSWR from "swr";
+import useSWR, { MutatorOptions } from "swr";
 import { getProfile } from "@/constants/api";
 import { fetcher } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { doLogout } from "@/services/userService";
+import ErrorFC, { ErrorFC2 } from "./error-loading";
 
 function UserSkeleton() {
   return <Skeleton className="w-full h-[50px] rounded-sm" />;
@@ -45,11 +46,11 @@ export function NavUser({
     avatar: string;
   };
 }) {
-  const { data, error } = useSWR(getProfile, fetcher);
+  const { data, error, isValidating, mutate } = useSWR(getProfile, fetcher);
   const { isMobile } = useSidebar();
   const router = useRouter();
 
-  if (error) return <center>Failed to load user details</center>;
+  if (error) return <ErrorFC2 mutate={mutate} isValidating={isValidating} message={"User Error"} />
   if (!data) return <UserSkeleton />;
 
   const _logout = () => {

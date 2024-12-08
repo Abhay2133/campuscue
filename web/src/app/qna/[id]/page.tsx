@@ -5,11 +5,13 @@ import Link from "next/link";
 import Loader from "@/components/loader";
 import { AnswerType } from "@/types/qna";
 import { getAnswersURL } from "@/constants/api";
-import useSWR from "swr";
+import useSWR, { MutatorOptions } from "swr";
 import { fetcher } from "@/lib/utils";
 import { Triangle } from "lucide-react";
 import { Question } from "@/components/question";
 import SidebarHeader from "@/components/header";
+import ErrorFC from "@/components/error-loading";
+import { AnswerPlaceholder } from "@/components/placeholders";
 
 export default function QuestionPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -19,6 +21,8 @@ export default function QuestionPage({ params }: { params: { id: string } }) {
       <Header id={id} />
       <div className=" max-w-[95%] md:max-w-[500px] mx-auto">
         <Question id={id} />
+        <h2 className=" font-semibold my-3">Answers</h2>
+
         {Answers(id)}
       </div>
     </main>
@@ -46,22 +50,15 @@ const Answers = (id: string) => {
 
   if (error)
     return (
-      <div className="text-center">
-        <p className="text-red-600">Failed to load Answers</p>
-        <Button
-          variant="outline"
-          onClick={() => mutate()} // Retry fetching
-          disabled={isValidating} // Disable if retry is in progress
-          className="mt-4"
-        >
-          {isValidating ? "Retrying..." : "Retry"}
-        </Button>
-      </div>
+      <ErrorFC
+        mutate={mutate}
+        isValidating={isValidating}
+        message={"Failed to load Answers"}
+      />
     );
-  if (!data) return <Loader message="Loading Answers" />;
+  if (!data) return <AnswerPlaceholder />;
   return (
-    <div className="flex flex-col gap-3 py-5">
-      <h2 className=" font-semibold">Answers</h2>
+    <div className="flex flex-col gap-3 pb-5">
       {(data as AnswerType[]).map((answer, i) => (
         <AnswerView key={i} answer={answer} />
       ))}
