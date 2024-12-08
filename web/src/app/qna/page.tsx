@@ -155,7 +155,7 @@ function Question({ question }: { question: QuestionType }) {
 const QnAHeader = () => {
   return (
     <SidebarHeader className="px-3 relative h-[50px]">
-      <h1 className="text-xl">QnA Section</h1>
+      <h1 className="text-lg font-semibold">QnA Forum</h1>
       <Link href="/qna/ask" className="ml-auto">
         <Button className="">Ask Question</Button>
       </Link>

@@ -22,7 +22,7 @@ export default function PostsPage() {
   return (
     <div>
       <SidebarHeader className="items-center py-3">
-        <div>Posts</div>
+        <div className="font-semibold font-lg">Posts</div>
         <div className="ml-auto">
           <Search />
         </div>

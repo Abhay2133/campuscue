@@ -1,0 +1,29 @@
+digraph {
+	rankdir=LR size="10,8"
+	User [label="User
+Users in the system." shape=ellipse]
+	Answer [label="Answer
+Answers to questions." shape=ellipse]
+	Question [label="Question
+Questions asked by users." shape=ellipse]
+	Post [label="Post
+Posts created by users." shape=ellipse]
+	Community [label="Community
+Communities users can create or join." shape=ellipse]
+	CommunityMembership [label="CommunityMembership
+Links users to communities." shape=ellipse]
+	Vote [label="Vote
+Tracks upvotes and downvotes." shape=ellipse]
+	User -> Answer [label="Creates (1:N)"]
+	User -> Question [label="Creates (1:N)"]
+	User -> Post [label="Creates (1:N)"]
+	User -> Community [label="Creates (1:N)"]
+	User -> CommunityMembership [label="Participates (1:N)"]
+	User -> Vote [label="Casts (1:N)"]
+	Answer -> Question [label="Refers to (N:1)"]
+	Question -> Answer [label="Has (1:N)"]
+	Community -> CommunityMembership [label="Has members (1:N)"]
+	Vote -> Question [label="Targets (N:1)"]
+	Vote -> Answer [label="Targets (N:1)"]
+	Vote -> Post [label="Targets (N:1)"]
+}

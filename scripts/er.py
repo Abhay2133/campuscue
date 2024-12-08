@@ -40,7 +40,7 @@ for src, dst, label, cardinality in relationships:
     er_diagram.edge(src, dst, label=f"{label} ({cardinality})")
 
 # Render the diagram
-output_path = "/mnt/data/er_diagram"
+output_path = "er_diagram"
 er_diagram.render(output_path, format="png", cleanup=True)
 
 output_path + ".png"
